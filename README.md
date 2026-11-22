@@ -18,6 +18,10 @@ Prototipo publicado: https://claude.ai/artifact/TuV7PaNVL7xhunw5dERqSb (copia en
 | `prototipo/` | Prototipo de referencia (un solo HTML) y capturas |
 | `screenshots/<id>/` | Evidencia de cada PR |
 
+## Cómo contribuir
+
+Las reglas de trabajo están en `docs/flujo-de-trabajo.md`: una feature de `docs/feature_list.json` por PR, rama `feature/<id>-<slug>`, Conventional Commits, tests por criterio (caso feliz y triste) y capturas en `screenshots/<id>/`. La rama `main` está protegida: todo entra por PR.
+
 ## Estado
 
 Solo documentación y prototipo. El proyecto base no se crea hasta que estén tomadas las decisiones que bloquean `S-01` (ver `docs/decisiones.md`).
