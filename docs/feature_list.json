@@ -1,6 +1,7 @@
 {
   "proyecto": "Biomecánica Lab",
   "actualizado": "2026-11-21",
+  "version": "única: el producto se construye de principio a fin",
   "convenciones": {
     "estados": [
       "pendiente",
@@ -10,7 +11,8 @@
       "hecho"
     ],
     "evidencia": "Capturas en screenshots/<id>/, una por criterio de aceptación como mínimo, generadas con Playwright desde una URL determinista (S-04)",
-    "pr": "Un PR por feature. El PR lista los criterios, enlaza las capturas y tiene tests unitarios que prueban esos criterios",
+    "criterios": "Cada criterio se identifica como <id>.<n> (B-05.2 = segundo criterio de B-05) y tiene al menos un test [feliz] y uno [triste]",
+    "pr": "Un PR por feature. El PR lista los criterios, enlaza las capturas (computadora y teléfono si hay UI) y tiene los tests de cada criterio",
     "reglas": "Ver docs/flujo-de-trabajo.md"
   },
   "features": [
@@ -19,10 +21,10 @@
       "prioridad": 1,
       "fase": "setup",
       "titulo": "Proyecto base",
-      "descripcion": "Proyecto con el framework elegido, TypeScript estricto, carpetas por tipo (biomechanics, scene, ui, exercises, muscles, constants, messages) y textos en messages/es.json.",
+      "descripcion": "Proyecto con el framework elegido, TypeScript estricto, carpetas por tipo (biomechanics, scene, ui, exercises, muscles, i18n, constants, locales) y CSS mobile first.",
       "criterios_aceptacion": [
         "La app levanta en local y muestra una página inicial",
-        "El texto de la página inicial sale de messages/es.json, sin textos escritos en los componentes",
+        "El texto de la página inicial sale de locales/, sin textos escritos en los componentes",
         "Existen las carpetas de las tres capas y src/biomechanics no importa nada de scene ni ui (lo verifica una regla de lint o un test)"
       ],
       "depende_de": [],
@@ -30,7 +32,6 @@
       "pr": null,
       "bloqueado_por": [
         "D-01",
-        "D-07",
         "D-08"
       ]
     },
@@ -39,11 +40,11 @@
       "prioridad": 2,
       "fase": "setup",
       "titulo": "Calidad: lint, tests y evidencia",
-      "descripcion": "Lint y formato, tests unitarios, typecheck y script de capturas con Playwright y WebGL por software.",
+      "descripcion": "Lint y formato, tests, typecheck y script de capturas con Playwright y WebGL por software, en viewport de computadora y de teléfono.",
       "criterios_aceptacion": [
         "El comando de tests corre y pasa con al menos un test",
         "El lint corre sin errores",
-        "El script de evidencia genera una captura en screenshots/S-02/ usando WebGL por software"
+        "El script de evidencia genera capturas en screenshots/S-02/ con WebGL por software, en 1400×1000 y en 390×844"
       ],
       "depende_de": [
         "S-01"
@@ -80,11 +81,11 @@
       "prioridad": 4,
       "fase": "setup",
       "titulo": "Estado en la URL y modo evidencia",
-      "descripcion": "La URL define ejercicio, instante, cámara, capa y modelos; con anim=0 la escena arranca pausada y el canvas avisa con data-ready cuando terminó de dibujar.",
+      "descripcion": "La URL define ejercicio, instante, cámara, capa, modelos e idioma; con anim=0 la escena arranca pausada y el canvas avisa con data-ready cuando terminó de dibujar.",
       "criterios_aceptacion": [
         "Abrir ?ex=squatHigh&t=1&anim=0 muestra la sentadilla pausada en el punto más bajo",
         "Dos capturas de la misma URL son idénticas píxel a píxel",
-        "Cambiar el estado desde la UI actualiza la URL"
+        "Un parámetro inválido en la URL se ignora y se usa el valor por defecto, sin romper la escena"
       ],
       "depende_de": [
         "S-02"
@@ -93,15 +94,57 @@
       "pr": null
     },
     {
-      "id": "B-01",
+      "id": "S-05",
       "prioridad": 5,
-      "fase": "v1",
+      "fase": "setup",
+      "titulo": "Idiomas: español e inglés",
+      "descripcion": "i18next con es.json y en.json, detección automática (elección previa en localStorage y después idioma del navegador), desplegable en el encabezado, formato de números por idioma y chequeo de claves.",
+      "criterios_aceptacion": [
+        "Con el navegador en inglés y sin elección previa, la app abre en inglés",
+        "Con el navegador en un idioma no soportado, la app abre en español",
+        "Elegir otro idioma en el desplegable cambia todos los textos al instante sin recargar ni perder el estado de la escena",
+        "La elección se recuerda al volver a entrar",
+        "es.json y en.json tienen exactamente las mismas claves y ninguna clave usada en el código falta",
+        "Los números usan coma decimal en español y punto en inglés"
+      ],
+      "depende_de": [
+        "S-02"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "S-06",
+      "prioridad": 6,
+      "fase": "setup",
+      "titulo": "Tests de los tests",
+      "descripcion": "Chequeo de trazabilidad criterio ↔ test, tests de mutación con umbral y helpers de aserción con caso triste.",
+      "criterios_aceptacion": [
+        "El chequeo de trazabilidad pasa cuando cada criterio de las features en progreso, en review o hechas tiene un test [feliz] y uno [triste]",
+        "El chequeo de trazabilidad falla con un fixture de feature sin test [triste] o con un test que apunta a un criterio inexistente",
+        "Los tests de mutación de src/biomechanics superan el 80 % de mutantes eliminados",
+        "Un fixture con un test vacío queda por debajo del umbral y el chequeo falla"
+      ],
+      "depende_de": [
+        "S-02"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-08"
+      ]
+    },
+    {
+      "id": "B-01",
+      "prioridad": 7,
+      "fase": "motor",
       "titulo": "Modelo antropométrico y presets",
       "descripcion": "buildModel convierte los parámetros (altura y % de segmentos) en longitudes; presets de la SPEC; cabeza+cuello toma lo que sobra. Constantes de Winter en src/constants.",
       "criterios_aceptacion": [
         "Con el preset Promedio, las longitudes coinciden con las fracciones de Winter de docs/04",
         "A igual altura, cabeza+cuello = H − tobillo − tibia − fémur − torso",
-        "Existen los 7 presets de la SPEC funcional con sus valores"
+        "Existen los 7 presets de la SPEC funcional con sus valores",
+        "Un parámetro fuera de rango se ajusta al límite más cercano"
       ],
       "depende_de": [
         "S-01"
@@ -111,8 +154,8 @@
     },
     {
       "id": "B-02",
-      "prioridad": 6,
-      "fase": "v1",
+      "prioridad": 8,
+      "fase": "motor",
       "titulo": "Cinemática directa sagital",
       "descripcion": "Posiciones de tobillo, rodilla, cadera, hombro y cabeza a partir de α, ψ y β.",
       "criterios_aceptacion": [
@@ -128,8 +171,8 @@
     },
     {
       "id": "B-03",
-      "prioridad": 7,
-      "fase": "v1",
+      "prioridad": 9,
+      "fase": "motor",
       "titulo": "Cinemática inversa de brazos",
       "descripcion": "IK de dos segmentos en 3D con vector de polo, y agarres por tipo de barra.",
       "criterios_aceptacion": [
@@ -145,8 +188,8 @@
     },
     {
       "id": "B-04",
-      "prioridad": 8,
-      "fase": "v1",
+      "prioridad": 10,
+      "fase": "motor",
       "titulo": "Centro de masa segmentario",
       "descripcion": "Centro de masa del cuerpo con las masas de Winter y del sistema con la carga.",
       "criterios_aceptacion": [
@@ -163,8 +206,8 @@
     },
     {
       "id": "B-05",
-      "prioridad": 9,
-      "fase": "v1",
+      "prioridad": 11,
+      "fase": "motor",
       "titulo": "Solver de sentadilla",
       "descripcion": "Barra alta, baja y frontal: recorrido por flexión de muslo, avance de rodilla hasta el tope de dorsiflexión y búsqueda del torso que equilibra sobre el mediopié.",
       "criterios_aceptacion": [
@@ -181,8 +224,8 @@
     },
     {
       "id": "B-06",
-      "prioridad": 10,
-      "fase": "v1",
+      "prioridad": 12,
+      "fase": "motor",
       "titulo": "Compensación pélvica en sentadilla",
       "descripcion": "Si la flexión de cadera necesaria supera la disponible, el exceso se pasa a retroversión.",
       "criterios_aceptacion": [
@@ -198,8 +241,8 @@
     },
     {
       "id": "B-07",
-      "prioridad": 11,
-      "fase": "v1",
+      "prioridad": 13,
+      "fase": "motor",
       "titulo": "Solver de bisagra / RDL",
       "descripcion": "Torso por recorrido, barra pegada a las piernas sobre el mediopié, búsqueda de cuánto va la cadera hacia atrás y compensación lumbar por límite de isquios.",
       "criterios_aceptacion": [
@@ -215,8 +258,8 @@
     },
     {
       "id": "B-08",
-      "prioridad": 12,
-      "fase": "v1",
+      "prioridad": 14,
+      "fase": "motor",
       "titulo": "Pelvis y escápulas",
       "descripcion": "Postura de pie equilibrada, oscilación de la inclinación pélvica y estados escapulares (retracción/protracción, elevación/depresión).",
       "criterios_aceptacion": [
@@ -232,8 +275,8 @@
     },
     {
       "id": "B-09",
-      "prioridad": 13,
-      "fase": "v1",
+      "prioridad": 15,
+      "fase": "motor",
       "titulo": "Lecturas y advertencias",
       "descripcion": "Brazos de momento, ratio, profundidad y las advertencias de la SPEC funcional.",
       "criterios_aceptacion": [
@@ -252,8 +295,8 @@
     },
     {
       "id": "E-01",
-      "prioridad": 14,
-      "fase": "v1",
+      "prioridad": 16,
+      "fase": "escena",
       "titulo": "Escena base",
       "descripcion": "Canvas 3D con luces, sombras, piso, grilla de 10 cm y cámara orbital.",
       "criterios_aceptacion": [
@@ -272,8 +315,8 @@
     },
     {
       "id": "E-02",
-      "prioridad": 15,
-      "fase": "v1",
+      "prioridad": 17,
+      "fase": "escena",
       "titulo": "Esqueleto procedural",
       "descripcion": "Huesos de piernas, brazos, pies y manos estirados entre articulaciones según la postura.",
       "criterios_aceptacion": [
@@ -291,8 +334,8 @@
     },
     {
       "id": "E-03",
-      "prioridad": 16,
-      "fase": "v1",
+      "prioridad": 18,
+      "fase": "escena",
       "titulo": "Pelvis, columna, tórax y cráneo",
       "descripcion": "Pelvis con EIAS/EIPS marcadas, columna con curvas lumbar, dorsal y cervical, caja torácica, clavículas, escápulas y cráneo.",
       "criterios_aceptacion": [
@@ -309,8 +352,8 @@
     },
     {
       "id": "E-04",
-      "prioridad": 17,
-      "fase": "v1",
+      "prioridad": 19,
+      "fase": "escena",
       "titulo": "Dos modelos y disposición",
       "descripcion": "Modelos A y B con sus colores; lado a lado según la vista o superpuestos con B translúcido.",
       "criterios_aceptacion": [
@@ -326,8 +369,8 @@
     },
     {
       "id": "E-05",
-      "prioridad": 18,
-      "fase": "v1",
+      "prioridad": 20,
+      "fase": "escena",
       "titulo": "Vistas rápidas de cámara",
       "descripcion": "Lateral, Frontal, Posterior, Superior y 3/4 con transición suave, y vista por defecto por ejercicio.",
       "criterios_aceptacion": [
@@ -343,8 +386,8 @@
     },
     {
       "id": "E-06",
-      "prioridad": 19,
-      "fase": "v1",
+      "prioridad": 21,
+      "fase": "escena",
       "titulo": "Ayudas visuales",
       "descripcion": "Vertical del mediopié, centro de masa, brazos de momento, trayectoria, barra y discos (translúcidos por defecto).",
       "criterios_aceptacion": [
@@ -361,8 +404,8 @@
     },
     {
       "id": "E-07",
-      "prioridad": 20,
-      "fase": "v1",
+      "prioridad": 22,
+      "fase": "escena",
       "titulo": "Etiquetas en la escena",
       "descripcion": "Ángulos, brazos de momento en cm, inclinación pélvica, distancia escapular y rótulo de compensación, proyectados en pantalla.",
       "criterios_aceptacion": [
@@ -378,8 +421,8 @@
     },
     {
       "id": "U-01",
-      "prioridad": 21,
-      "fase": "v1",
+      "prioridad": 23,
+      "fase": "ui",
       "titulo": "Selector de ejercicio y parámetros",
       "descripcion": "Selector con los 7 ejercicios, recorrido propio de cada uno y carga en ejercicios con barra.",
       "criterios_aceptacion": [
@@ -396,8 +439,8 @@
     },
     {
       "id": "U-02",
-      "prioridad": 22,
-      "fase": "v1",
+      "prioridad": 24,
+      "fase": "ui",
       "titulo": "Línea de tiempo",
       "descripcion": "Play/pausa, barra de instante y velocidad.",
       "criterios_aceptacion": [
@@ -413,8 +456,8 @@
     },
     {
       "id": "U-03",
-      "prioridad": 23,
-      "fase": "v1",
+      "prioridad": 25,
+      "fase": "ui",
       "titulo": "Panel de modelos",
       "descripcion": "Preset y filtros anatómicos por modelo, con paso a Personalizado.",
       "criterios_aceptacion": [
@@ -431,8 +474,8 @@
     },
     {
       "id": "U-04",
-      "prioridad": 24,
-      "fase": "v1",
+      "prioridad": 26,
+      "fase": "ui",
       "titulo": "Paneles de lecturas, advertencias y qué mirar",
       "descripcion": "Tabla de lecturas y advertencias por modelo, texto de qué mirar y resumen comparativo.",
       "criterios_aceptacion": [
@@ -449,8 +492,8 @@
     },
     {
       "id": "U-05",
-      "prioridad": 25,
-      "fase": "v1",
+      "prioridad": 27,
+      "fase": "ui",
       "titulo": "Opciones de capa y vista",
       "descripcion": "Toggles de silueta, lado a lado, trayectoria, brazos de momento, centro de masa, etiquetas, grilla y discos opacos.",
       "criterios_aceptacion": [
@@ -466,13 +509,17 @@
     },
     {
       "id": "U-06",
-      "prioridad": 26,
-      "fase": "v1",
-      "titulo": "Diseño para celular y tablet",
-      "descripcion": "Distribución y controles táctiles para pantallas chicas.",
+      "prioridad": 28,
+      "fase": "ui",
+      "titulo": "Layout responsive",
+      "descripcion": "Distribución por breakpoint (teléfono < 640 px con pestañas Ejercicio, Modelos, Vista y Datos; tablet; computadora), gestos táctiles y encuadre de cámara según el aspecto.",
       "criterios_aceptacion": [
-        "En un viewport de celular la escena queda arriba y los paneles abajo",
-        "Rotar y hacer zoom funciona con gestos"
+        "En 390×844 la escena queda arriba (~55 % del alto) con la línea de tiempo debajo y el resto en pestañas",
+        "En 1400×1000 la escena queda a la izquierda y los controles en una columna a la derecha",
+        "No hay scroll horizontal en ningún ancho desde 320 px",
+        "Arrastrar sobre la escena en el teléfono rota el modelo y no hace scroll de la página",
+        "Los dos modelos entran enteros en el encuadre en vertical y en horizontal",
+        "Todos los controles tienen un área táctil de al menos 44 × 44 px"
       ],
       "depende_de": [
         "U-04"
@@ -480,13 +527,13 @@
       "estado": "bloqueado",
       "pr": null,
       "bloqueado_por": [
-        "D-13"
+        "D-19"
       ]
     },
     {
       "id": "M-01",
-      "prioridad": 27,
-      "fase": "v1.5",
+      "prioridad": 29,
+      "fase": "musculos",
       "titulo": "Catálogo de músculos",
       "descripcion": "Músculos de la SPEC como datos: origen, inserción y grosor por punto anatómico.",
       "criterios_aceptacion": [
@@ -502,8 +549,8 @@
     },
     {
       "id": "M-02",
-      "prioridad": 28,
-      "fase": "v1.5",
+      "prioridad": 30,
+      "fase": "musculos",
       "titulo": "Capa de músculos",
       "descripcion": "Selector Huesos / Músculos / Solo activos.",
       "criterios_aceptacion": [
@@ -519,8 +566,8 @@
     },
     {
       "id": "M-03",
-      "prioridad": 29,
-      "fase": "v1.5",
+      "prioridad": 31,
+      "fase": "musculos",
       "titulo": "Activación por ejercicio y fase",
       "descripcion": "Tabla cualitativa de activación de 0 a 1 por ejercicio, fase y postura.",
       "criterios_aceptacion": [
@@ -540,8 +587,8 @@
     },
     {
       "id": "M-04",
-      "prioridad": 30,
-      "fase": "v1.5",
+      "prioridad": 32,
+      "fase": "musculos",
       "titulo": "Resaltado en rojo",
       "descripcion": "Gris si el músculo está inactivo, de rosado a rojo según la activación.",
       "criterios_aceptacion": [
@@ -558,8 +605,8 @@
     },
     {
       "id": "M-05",
-      "prioridad": 31,
-      "fase": "v1.5",
+      "prioridad": 33,
+      "fase": "musculos",
       "titulo": "Panel de músculos involucrados",
       "descripcion": "Hasta 9 músculos ordenados por activación de A, con barra por modelo y aviso de estimación cualitativa.",
       "criterios_aceptacion": [
@@ -575,8 +622,8 @@
     },
     {
       "id": "M-06",
-      "prioridad": 32,
-      "fase": "v1.5",
+      "prioridad": 34,
+      "fase": "musculos",
       "titulo": "Concéntrico, excéntrico e isométrico",
       "descripcion": "Distinguir el tipo de contracción por músculo y fase.",
       "criterios_aceptacion": [
@@ -593,8 +640,8 @@
     },
     {
       "id": "M-07",
-      "prioridad": 33,
-      "fase": "v2",
+      "prioridad": 35,
+      "fase": "musculos",
       "titulo": "Malla anatómica realista",
       "descripcion": "Reemplazar el esqueleto procedural por una malla con rig sin tocar el motor.",
       "criterios_aceptacion": [
@@ -612,8 +659,8 @@
     },
     {
       "id": "X-01",
-      "prioridad": 34,
-      "fase": "v2",
+      "prioridad": 36,
+      "fase": "ejercicios",
       "titulo": "Ejercicios como datos",
       "descripcion": "Formato de definición de ejercicio y carga de los 7 actuales desde ese formato.",
       "criterios_aceptacion": [
@@ -631,8 +678,8 @@
     },
     {
       "id": "X-02",
-      "prioridad": 35,
-      "fase": "v2",
+      "prioridad": 37,
+      "fase": "ejercicios",
       "titulo": "Peso muerto convencional",
       "descripcion": "Arranque desde el piso con barra sobre el mediopié.",
       "criterios_aceptacion": [
@@ -651,8 +698,8 @@
     },
     {
       "id": "X-03",
-      "prioridad": 36,
-      "fase": "v2",
+      "prioridad": 38,
+      "fase": "ejercicios",
       "titulo": "Hip thrust",
       "descripcion": "Apoyo de espalda en banco y extensión de cadera.",
       "criterios_aceptacion": [
@@ -670,8 +717,8 @@
     },
     {
       "id": "X-04",
-      "prioridad": 37,
-      "fase": "v2",
+      "prioridad": 39,
+      "fase": "ejercicios",
       "titulo": "Press banca",
       "descripcion": "Acostado, barra con trayectoria en J y retracción escapular.",
       "criterios_aceptacion": [
@@ -689,8 +736,8 @@
     },
     {
       "id": "X-05",
-      "prioridad": 38,
-      "fase": "v2",
+      "prioridad": 40,
+      "fase": "ejercicios",
       "titulo": "Press militar y remo",
       "descripcion": "Empujes y tirones verticales y horizontales de pie.",
       "criterios_aceptacion": [
@@ -708,8 +755,8 @@
     },
     {
       "id": "X-06",
-      "prioridad": 39,
-      "fase": "v2",
+      "prioridad": 41,
+      "fase": "ejercicios",
       "titulo": "Movimientos fuera del plano sagital",
       "descripcion": "Stance, valgo, rotaciones y ejercicios unilaterales (zancada).",
       "criterios_aceptacion": [
@@ -724,67 +771,6 @@
       "bloqueado_por": [
         "D-12",
         "D-15"
-      ]
-    },
-    {
-      "id": "C-01",
-      "prioridad": 40,
-      "fase": "v2",
-      "titulo": "Cuentas de entrenador",
-      "descripcion": "Registro e inicio de sesión.",
-      "criterios_aceptacion": [
-        "Un entrenador puede crear cuenta e iniciar sesión",
-        "Cada entrenador ve solo sus datos"
-      ],
-      "depende_de": [
-        "S-03"
-      ],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-04",
-        "D-06"
-      ]
-    },
-    {
-      "id": "C-02",
-      "prioridad": 41,
-      "fase": "v2",
-      "titulo": "Perfiles de alumnos",
-      "descripcion": "Guardar los filtros anatómicos de un alumno con un nombre y usarlos como modelo A o B.",
-      "criterios_aceptacion": [
-        "Se puede guardar, editar y borrar un perfil",
-        "Un perfil guardado se puede elegir como modelo"
-      ],
-      "depende_de": [
-        "C-01",
-        "U-03"
-      ],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-04",
-        "D-09"
-      ]
-    },
-    {
-      "id": "C-03",
-      "prioridad": 42,
-      "fase": "v2",
-      "titulo": "Links compartibles",
-      "descripcion": "Guardar una escena (ejercicio, modelos, instante, cámara, capa) y compartirla por link.",
-      "criterios_aceptacion": [
-        "El link abre la escena exactamente como se guardó",
-        "Quien recibe el link no necesita cuenta para verla"
-      ],
-      "depende_de": [
-        "S-04",
-        "C-01"
-      ],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-04"
       ]
     }
   ]

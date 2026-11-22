@@ -10,34 +10,37 @@ Reglas definidas por Nico, las mismas que en Etha Joyas, adaptadas a una app 3D.
 
 ## Features y PRs
 
-- Las funcionalidades están en `feature_list.json`, ordenadas por prioridad. Cada una es atómica.
+- Las funcionalidades están en `feature_list.json`, ordenadas por prioridad. Cada una es atómica. Hay una sola versión: el producto se construye de principio a fin.
+- Cada criterio de aceptación se identifica como `<feature>.<n>` (`B-05.2` = segundo criterio de B-05).
 - Un PR por feature. El PR incluye:
   - los criterios de aceptación de la feature;
   - las capturas que demuestran cada criterio, en `screenshots/<id-de-feature>/`;
-  - tests unitarios.
+  - los tests de cada criterio (caso feliz y caso triste).
 - Al abrir un PR, la feature pasa a `en_review` y se carga el número de PR en `feature_list.json`. Al mergear, pasa a `hecho`.
 - Claude se suscribe a cada PR y lo mantiene actualizado: resuelve conflictos y responde las preguntas de Nico.
 
 ## Git
 
-- Una rama por feature: `feature/<id>-<slug>` (ej.: `feature/B-04-squat-solver`).
+- Una rama por feature: `feature/<id>-<slug>` (ej.: `feature/B-05-squat-solver`).
 - Commits con Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`, `chore:`, `refactor:`).
 
 ## Código
 
-- Nada de código spaghetti, componentes enormes ni estilos mezclados. Carpetas organizadas por tipo.
-- Tres capas que no se mezclan: motor biomecánico (TS puro), escena 3D y UI. La dependencia va en un solo sentido: UI → escena → motor.
-- Código en inglés; ningún texto de interfaz escrito en los componentes.
+- Componentes modulares que respetan SOLID y las buenas prácticas (detalle en la SPEC técnica). Nada de código spaghetti, componentes enormes ni estilos mezclados. Carpetas organizadas por tipo.
+- Tres capas que no se mezclan: motor biomecánico (TS puro), escena 3D y UI. Dependencias en un solo sentido: UI → escena → motor.
+- Código en inglés. Ningún texto de interfaz en el código: todo en `es.json` y `en.json`, con las mismas claves en los dos.
+- Mobile first: cada feature con UI se prueba en teléfono y en computadora.
 
 ## Evidencia
 
 - Las capturas se generan con Playwright, una por criterio de aceptación como mínimo, en `screenshots/<id>/`.
-- Cada captura se nombra con el número de criterio que demuestra (ej.: `01-fémur-largo-inclina-más.png`).
-- La escena tiene que ser determinista para capturar: se abre por URL con ejercicio, modelos, instante, cámara y capa fijos, y la animación pausada (ver `S-04` y la SPEC técnica). Sin esto, dos corridas dan capturas distintas.
-- WebGL en Playwright corre por software (SwiftShader); las capturas no dependen de la GPU de la máquina.
+- Cada captura se nombra con el número de criterio que demuestra (ej.: `B-05.2-fémur-largo-inclina-más.png`). Si el criterio tiene UI, hay captura en computadora y en teléfono.
+- La escena se abre por URL con ejercicio, modelos, instante, cámara, capa e idioma fijos y la animación pausada (`S-04`). Sin esto, dos corridas dan capturas distintas.
+- WebGL en Playwright corre por software (SwiftShader).
 
 ## Tests
 
-- Todo lleva tests unitarios, chicos y puntuales.
-- El motor biomecánico se prueba con invariantes físicos, no con números mágicos: el centro de masa queda sobre el mediopié, un fémur más largo da más inclinación, bajar la flexión de cadera disponible hace aparecer la retroversión, etc.
-- Siempre que se pueda, los tests prueban directamente los criterios de aceptación de la feature.
+- Los tests prueban los criterios de los SPEC; no se escriben tests genéricos.
+- Cada criterio tiene al menos un test de **caso feliz** y uno de **caso triste**. El nombre empieza con el identificador y el caso: `[B-05.2][feliz] …`, `[B-05.2][triste] …`.
+- Hay **tests de los tests**: trazabilidad (todo criterio tiene sus dos tests y todo test apunta a un criterio que existe), mutación (los tests fallan cuando se rompe el código) y sensibilidad de los helpers de aserción. Cada meta-test tiene también su caso feliz y su caso triste.
+- El motor biomecánico se prueba con invariantes físicos, no con números mágicos.

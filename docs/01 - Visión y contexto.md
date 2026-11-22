@@ -4,7 +4,9 @@ Actualizado: 21/11/2026
 
 ## Qué es
 
-Una web basada en animaciones con modelos de personas en 3D que respetan la anatomía real. Cada modelo tiene "filtros anatómicos" (largo de fémur, tibia y torso, movilidad de tobillo y cadera, inclinación pélvica…) y se le pueden programar movimientos para explicar patrones de ejercicios puntuales.
+Un sitio web público, basado en animaciones, con modelos de personas en 3D que respetan la anatomía real. Cada modelo tiene "filtros anatómicos" (largo de fémur, tibia y torso, movilidad de tobillo y cadera, inclinación pélvica…) y se le pueden programar movimientos para explicar patrones de ejercicios puntuales.
+
+Cualquier persona entra y lo usa para hacer demostraciones: no hay cuentas, perfiles ni contenido guardado.
 
 Ejemplos que la motivaron (palabras de Nico):
 
@@ -23,27 +25,23 @@ La postura no se anima a mano: se calcula. Para cada instante del movimiento, un
 
 ## Para quién
 
-| Usuario | Para qué la usa |
-| --- | --- |
-| Entrenador (usuario principal) | Explicar técnica, mostrar por qué cada cuerpo se mueve distinto, preparar material para alumnos |
-| Alumno | Ver la explicación que le arma el entrenador, desde cualquier ángulo |
+Cualquiera que quiera mostrar o entender un patrón de movimiento: entrenadores en una clase o una consulta, alumnos, estudiantes de educación física o kinesiología. Se usa desde la computadora o desde el teléfono, en español o en inglés.
 
-Si la app es solo para Nico o un producto para otros entrenadores está pendiente (D-06).
+## Alcance
 
-## Qué se aprobó del prototipo
+Se desarrolla de principio a fin en una sola versión: todo lo de la SPEC funcional forma parte del producto.
 
-- Prototipo 2D (vista sagital): aprobado por Nico ("me parece excelente").
-- Pedido siguiente: poder rotar el modelo en 3D y verlo desde cualquier posición. Ya está en el prototipo v2.
-- Próximo interés declarado: capas de vista, por ejemplo ver músculos en vez de huesos y marcar en rojo los músculos involucrados en el ejercicio. El prototipo v2 trae una primera versión.
+Fuera de alcance:
 
-Prototipo: `prototipo/index.html` · https://claude.ai/artifact/TuV7PaNVL7xhunw5dERqSb
-
-## Fuera de alcance (por ahora)
-
+- Cuentas, perfiles de alumnos, links compartibles o cualquier contenido guardado en un servidor.
 - Análisis de video del alumno o captura de movimiento.
 - Prescripción de rutinas, cargas o diagnóstico clínico. La app explica patrones; no reemplaza la evaluación de un profesional.
 - Simulación dinámica con fuerzas musculares reales (EMG, optimización muscular). La activación muscular es cualitativa (ver SPEC funcional).
 
-## Relación con otros proyectos de Nico
+## Qué se aprobó del prototipo
 
-Comparte público con TrainingBook (clon de Strong para entrenadores). Integrarla con TrainingBook no está decidido (D-14).
+- Prototipo 2D (vista sagital): aprobado por Nico ("me parece excelente").
+- Rotar el modelo en 3D y verlo desde cualquier posición: implementado en el prototipo v2.
+- Capas de vista (músculos en vez de huesos, músculos involucrados en rojo): primera versión en el prototipo v2.
+
+Prototipo: `prototipo/index.html` · https://claude.ai/artifact/TuV7PaNVL7xhunw5dERqSb

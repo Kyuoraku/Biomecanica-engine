@@ -1,6 +1,6 @@
 # Biomecánica Lab
 
-Web de modelos humanos en 3D con proporciones anatómicas reales para explicar patrones de movimiento de ejercicios: comparar cuerpos distintos (fémur corto vs largo, tobillo rígido, anteversión pélvica…), ver compensaciones y qué músculos trabajan.
+Sitio público con modelos humanos en 3D con proporciones anatómicas reales para explicar patrones de movimiento de ejercicios: comparar cuerpos distintos (fémur corto vs largo, tobillo rígido, anteversión pélvica…), ver compensaciones y qué músculos trabajan. Funciona en español e inglés, en teléfono y computadora. Sin cuentas ni base de datos.
 
 Prototipo publicado: https://claude.ai/artifact/TuV7PaNVL7xhunw5dERqSb (copia en `prototipo/index.html`).
 
@@ -15,7 +15,6 @@ Prototipo publicado: https://claude.ai/artifact/TuV7PaNVL7xhunw5dERqSb (copia en
 | `docs/feature_list.json` | Funcionalidades atómicas, priorizadas, con criterios de aceptación y estado |
 | `docs/decisiones.md` | Decisiones tomadas y pendientes |
 | `docs/flujo-de-trabajo.md` | Reglas de trabajo: PRs, evidencia, tests |
-| `docs/base-de-datos/` | Propuesta de esquema (para revisar): diagrama DBML y reglas |
 | `prototipo/` | Prototipo de referencia (un solo HTML) y capturas |
 | `screenshots/<id>/` | Evidencia de cada PR |
 
