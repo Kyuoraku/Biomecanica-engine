@@ -21,6 +21,8 @@ Toda decisión de diseño o arquitectura la toma Nico. Este archivo registra las
 | — | Diseño de código | Componentes de frontend y de backend (si lo hubiera) modulares, con principios SOLID y buenas prácticas |
 | — | Tests | Prueban los criterios definidos en los SPEC, no tests genéricos. Caso feliz y caso triste por criterio. Además, tests que prueban que los demás tests funcionan |
 | — | Responsive | Se usa en teléfono y en computadora, con una UI amigable y fácil de usar |
+| D-16 | Nombre del repo | `Kyuoraku/Biomecanica-engine` (https://github.com/Kyuoraku/Biomecanica-engine) |
+| D-17 | Visibilidad del repo | Público, con `main` protegida: todo entra por PR. La licencia sigue pendiente |
 | — | Contexto para continuar | Un proyecto en la web de Claude con todo el contexto para seguir el desarrollo en un hilo |
 
 ## Pendientes
@@ -36,8 +38,7 @@ Toda decisión de diseño o arquitectura la toma Nico. Este archivo registra las
 | D-11 | Tabla de activación muscular | Nico | Nico valida la tabla por ejercicio y fase del prototipo; decidir si se distingue concéntrico, excéntrico e isométrico | M-03, M-06 |
 | D-12 | Movimientos fuera del plano sagital | Nico | Stance, valgo, rotaciones y ejercicios unilaterales necesitan ampliar el solver | X-06 |
 | D-15 | Ejercicios adicionales y su orden | Nico | Peso muerto convencional, hip thrust, press banca, press militar, remo, dominada, zancada | X-02 a X-06 |
-| D-16 | Nombre del proyecto y del repo | Nico | "Biomecánica Lab" es provisorio | S-03 |
-| D-17 | Licencia y visibilidad del repo | Nico | Repo privado en GitHub | S-03 |
+| D-17 | Licencia del repo | Nico | MIT para el código (la misma que Three.js). Si más adelante se usa una malla CC BY-SA (D-03), esa malla va con su propia licencia | S-03 |
 | D-19 | Librería de estilos | Nico | Tailwind, como en Etha Joyas | U-06 |
 
 ## Descartadas
