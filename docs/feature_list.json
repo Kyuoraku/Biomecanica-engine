@@ -1,0 +1,791 @@
+{
+  "proyecto": "Biomecánica Lab",
+  "actualizado": "2026-11-21",
+  "convenciones": {
+    "estados": [
+      "pendiente",
+      "bloqueado",
+      "en_progreso",
+      "en_review",
+      "hecho"
+    ],
+    "evidencia": "Capturas en screenshots/<id>/, una por criterio de aceptación como mínimo, generadas con Playwright desde una URL determinista (S-04)",
+    "pr": "Un PR por feature. El PR lista los criterios, enlaza las capturas y tiene tests unitarios que prueban esos criterios",
+    "reglas": "Ver docs/flujo-de-trabajo.md"
+  },
+  "features": [
+    {
+      "id": "S-01",
+      "prioridad": 1,
+      "fase": "setup",
+      "titulo": "Proyecto base",
+      "descripcion": "Proyecto con el framework elegido, TypeScript estricto, carpetas por tipo (biomechanics, scene, ui, exercises, muscles, constants, messages) y textos en messages/es.json.",
+      "criterios_aceptacion": [
+        "La app levanta en local y muestra una página inicial",
+        "El texto de la página inicial sale de messages/es.json, sin textos escritos en los componentes",
+        "Existen las carpetas de las tres capas y src/biomechanics no importa nada de scene ni ui (lo verifica una regla de lint o un test)"
+      ],
+      "depende_de": [],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-01",
+        "D-07",
+        "D-08"
+      ]
+    },
+    {
+      "id": "S-02",
+      "prioridad": 2,
+      "fase": "setup",
+      "titulo": "Calidad: lint, tests y evidencia",
+      "descripcion": "Lint y formato, tests unitarios, typecheck y script de capturas con Playwright y WebGL por software.",
+      "criterios_aceptacion": [
+        "El comando de tests corre y pasa con al menos un test",
+        "El lint corre sin errores",
+        "El script de evidencia genera una captura en screenshots/S-02/ usando WebGL por software"
+      ],
+      "depende_de": [
+        "S-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-08"
+      ]
+    },
+    {
+      "id": "S-03",
+      "prioridad": 3,
+      "fase": "setup",
+      "titulo": "Repo remoto y deploy",
+      "descripcion": "Repo en GitHub y deploy automático del sitio estático desde la rama principal.",
+      "criterios_aceptacion": [
+        "Un push a la rama principal publica el sitio",
+        "El repo remoto tiene la rama principal protegida contra pushes directos de features"
+      ],
+      "depende_de": [
+        "S-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-05",
+        "D-16",
+        "D-17"
+      ]
+    },
+    {
+      "id": "S-04",
+      "prioridad": 4,
+      "fase": "setup",
+      "titulo": "Estado en la URL y modo evidencia",
+      "descripcion": "La URL define ejercicio, instante, cámara, capa y modelos; con anim=0 la escena arranca pausada y el canvas avisa con data-ready cuando terminó de dibujar.",
+      "criterios_aceptacion": [
+        "Abrir ?ex=squatHigh&t=1&anim=0 muestra la sentadilla pausada en el punto más bajo",
+        "Dos capturas de la misma URL son idénticas píxel a píxel",
+        "Cambiar el estado desde la UI actualiza la URL"
+      ],
+      "depende_de": [
+        "S-02"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-01",
+      "prioridad": 5,
+      "fase": "v1",
+      "titulo": "Modelo antropométrico y presets",
+      "descripcion": "buildModel convierte los parámetros (altura y % de segmentos) en longitudes; presets de la SPEC; cabeza+cuello toma lo que sobra. Constantes de Winter en src/constants.",
+      "criterios_aceptacion": [
+        "Con el preset Promedio, las longitudes coinciden con las fracciones de Winter de docs/04",
+        "A igual altura, cabeza+cuello = H − tobillo − tibia − fémur − torso",
+        "Existen los 7 presets de la SPEC funcional con sus valores"
+      ],
+      "depende_de": [
+        "S-01"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-02",
+      "prioridad": 6,
+      "fase": "v1",
+      "titulo": "Cinemática directa sagital",
+      "descripcion": "Posiciones de tobillo, rodilla, cadera, hombro y cabeza a partir de α, ψ y β.",
+      "criterios_aceptacion": [
+        "Con α = ψ = β = 0 las articulaciones quedan alineadas sobre la vertical del tobillo",
+        "Los segmentos conservan su largo para cualquier combinación de ángulos",
+        "Con ψ = 90° el muslo queda horizontal"
+      ],
+      "depende_de": [
+        "B-01"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-03",
+      "prioridad": 7,
+      "fase": "v1",
+      "titulo": "Cinemática inversa de brazos",
+      "descripcion": "IK de dos segmentos en 3D con vector de polo, y agarres por tipo de barra.",
+      "criterios_aceptacion": [
+        "Brazo y antebrazo conservan su largo (error < 0,1 mm)",
+        "Si el objetivo está al alcance, la mano llega al objetivo",
+        "El codo queda del lado del vector de polo"
+      ],
+      "depende_de": [
+        "B-02"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-04",
+      "prioridad": 8,
+      "fase": "v1",
+      "titulo": "Centro de masa segmentario",
+      "descripcion": "Centro de masa del cuerpo con las masas de Winter y del sistema con la carga.",
+      "criterios_aceptacion": [
+        "Las fracciones de masa suman 1",
+        "Con carga 0 el centro de masa del sistema es el del cuerpo",
+        "Con carga, el centro de masa se desplaza hacia la barra en proporción a la carga"
+      ],
+      "depende_de": [
+        "B-02",
+        "B-03"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-05",
+      "prioridad": 9,
+      "fase": "v1",
+      "titulo": "Solver de sentadilla",
+      "descripcion": "Barra alta, baja y frontal: recorrido por flexión de muslo, avance de rodilla hasta el tope de dorsiflexión y búsqueda del torso que equilibra sobre el mediopié.",
+      "criterios_aceptacion": [
+        "En p ∈ {0, 0,25, 0,5, 0,75, 1} el centro de masa queda a menos de 1 mm del mediopié",
+        "A igual altura, el modelo de fémur largo se inclina más que el de fémur corto en el punto más bajo",
+        "Barra baja da más inclinación que barra alta y barra frontal menos",
+        "Con menos dorsiflexión, más inclinación"
+      ],
+      "depende_de": [
+        "B-04"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-06",
+      "prioridad": 10,
+      "fase": "v1",
+      "titulo": "Compensación pélvica en sentadilla",
+      "descripcion": "Si la flexión de cadera necesaria supera la disponible, el exceso se pasa a retroversión.",
+      "criterios_aceptacion": [
+        "Con flexión de cadera máxima suficiente la compensación es 0",
+        "Al bajarla, la compensación es igual al exceso (hasta 30°)",
+        "La inclinación pélvica resultante es reposo − compensación"
+      ],
+      "depende_de": [
+        "B-05"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-07",
+      "prioridad": 11,
+      "fase": "v1",
+      "titulo": "Solver de bisagra / RDL",
+      "descripcion": "Torso por recorrido, barra pegada a las piernas sobre el mediopié, búsqueda de cuánto va la cadera hacia atrás y compensación lumbar por límite de isquios.",
+      "criterios_aceptacion": [
+        "El centro de masa queda a menos de 1 mm del mediopié en todo el recorrido",
+        "La barra queda en la vertical del mediopié",
+        "Bajar el límite de isquios aumenta la compensación lumbar"
+      ],
+      "depende_de": [
+        "B-04"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-08",
+      "prioridad": 12,
+      "fase": "v1",
+      "titulo": "Pelvis y escápulas",
+      "descripcion": "Postura de pie equilibrada, oscilación de la inclinación pélvica y estados escapulares (retracción/protracción, elevación/depresión).",
+      "criterios_aceptacion": [
+        "De pie, el centro de masa queda sobre el mediopié",
+        "La inclinación pélvica va de reposo + amplitud a reposo − amplitud",
+        "En retracción la distancia medial baja de forma monótona; en elevación el hombro sube con la escápula"
+      ],
+      "depende_de": [
+        "B-04"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "B-09",
+      "prioridad": 13,
+      "fase": "v1",
+      "titulo": "Lecturas y advertencias",
+      "descripcion": "Brazos de momento, ratio, profundidad y las advertencias de la SPEC funcional.",
+      "criterios_aceptacion": [
+        "Los brazos de momento son la distancia horizontal de cadera y rodilla a la vertical del mediopié",
+        "Cada advertencia de la tabla de la SPEC aparece solo cuando se cumple su condición",
+        "El resumen del punto más bajo compara inclinación y brazo de momento de los dos modelos"
+      ],
+      "depende_de": [
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "E-01",
+      "prioridad": 14,
+      "fase": "v1",
+      "titulo": "Escena base",
+      "descripcion": "Canvas 3D con luces, sombras, piso, grilla de 10 cm y cámara orbital.",
+      "criterios_aceptacion": [
+        "Se puede rotar, hacer zoom y desplazar con mouse y con touch",
+        "La grilla tiene celdas de 10 cm",
+        "La escena se adapta al tamaño del contenedor"
+      ],
+      "depende_de": [
+        "S-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-02"
+      ]
+    },
+    {
+      "id": "E-02",
+      "prioridad": 15,
+      "fase": "v1",
+      "titulo": "Esqueleto procedural",
+      "descripcion": "Huesos de piernas, brazos, pies y manos estirados entre articulaciones según la postura.",
+      "criterios_aceptacion": [
+        "Con una postura de sentadilla los huesos siguen las articulaciones del motor",
+        "Los huesos no cambian de largo durante la animación",
+        "Las capturas lateral y frontal muestran los dos lados del cuerpo"
+      ],
+      "depende_de": [
+        "E-01",
+        "B-02",
+        "B-03"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "E-03",
+      "prioridad": 16,
+      "fase": "v1",
+      "titulo": "Pelvis, columna, tórax y cráneo",
+      "descripcion": "Pelvis con EIAS/EIPS marcadas, columna con curvas lumbar, dorsal y cervical, caja torácica, clavículas, escápulas y cráneo.",
+      "criterios_aceptacion": [
+        "La pelvis rota con la inclinación pélvica y las EIAS/EIPS se ven con el color del modelo",
+        "La lordosis lumbar aumenta con anteversión y se aplana con retroversión",
+        "Las escápulas se mueven según el estado escapular"
+      ],
+      "depende_de": [
+        "E-02",
+        "B-08"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "E-04",
+      "prioridad": 17,
+      "fase": "v1",
+      "titulo": "Dos modelos y disposición",
+      "descripcion": "Modelos A y B con sus colores; lado a lado según la vista o superpuestos con B translúcido.",
+      "criterios_aceptacion": [
+        "En vista lateral los modelos quedan uno al lado del otro sin superponerse",
+        "En frontal y posterior quedan lado a lado en el ancho",
+        "Con lado a lado desactivado se superponen y B se ve translúcido"
+      ],
+      "depende_de": [
+        "E-02"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "E-05",
+      "prioridad": 18,
+      "fase": "v1",
+      "titulo": "Vistas rápidas de cámara",
+      "descripcion": "Lateral, Frontal, Posterior, Superior y 3/4 con transición suave, y vista por defecto por ejercicio.",
+      "criterios_aceptacion": [
+        "Cada botón lleva la cámara a su vista",
+        "Al elegir un ejercicio se aplica su vista por defecto",
+        "Después de una vista rápida se puede seguir rotando libremente"
+      ],
+      "depende_de": [
+        "E-01"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "E-06",
+      "prioridad": 19,
+      "fase": "v1",
+      "titulo": "Ayudas visuales",
+      "descripcion": "Vertical del mediopié, centro de masa, brazos de momento, trayectoria, barra y discos (translúcidos por defecto).",
+      "criterios_aceptacion": [
+        "Cada ayuda se puede activar y desactivar",
+        "El centro de masa dibujado coincide con el del motor",
+        "Con discos translúcidos se ve el cuerpo detrás de la barra en vista lateral"
+      ],
+      "depende_de": [
+        "E-04",
+        "B-09"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "E-07",
+      "prioridad": 20,
+      "fase": "v1",
+      "titulo": "Etiquetas en la escena",
+      "descripcion": "Ángulos, brazos de momento en cm, inclinación pélvica, distancia escapular y rótulo de compensación, proyectados en pantalla.",
+      "criterios_aceptacion": [
+        "Las etiquetas siguen a su punto al rotar la cámara",
+        "Los valores coinciden con las lecturas del panel",
+        "El rótulo de compensación aparece solo cuando hay compensación"
+      ],
+      "depende_de": [
+        "E-06"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "U-01",
+      "prioridad": 21,
+      "fase": "v1",
+      "titulo": "Selector de ejercicio y parámetros",
+      "descripcion": "Selector con los 7 ejercicios, recorrido propio de cada uno y carga en ejercicios con barra.",
+      "criterios_aceptacion": [
+        "Cada ejercicio muestra su parámetro con el rango y el valor por defecto de la SPEC",
+        "La carga solo aparece en sentadillas y bisagra",
+        "Cambiar un parámetro actualiza la escena y las lecturas"
+      ],
+      "depende_de": [
+        "B-09",
+        "E-04"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "U-02",
+      "prioridad": 22,
+      "fase": "v1",
+      "titulo": "Línea de tiempo",
+      "descripcion": "Play/pausa, barra de instante y velocidad.",
+      "criterios_aceptacion": [
+        "Mover la barra pausa y lleva la escena a ese instante",
+        "La velocidad cambia la duración del ciclo",
+        "El indicador de fase muestra excéntrica al bajar y concéntrica al subir"
+      ],
+      "depende_de": [
+        "U-01"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "U-03",
+      "prioridad": 23,
+      "fase": "v1",
+      "titulo": "Panel de modelos",
+      "descripcion": "Preset y filtros anatómicos por modelo, con paso a Personalizado.",
+      "criterios_aceptacion": [
+        "Elegir un preset carga sus valores en los filtros",
+        "Tocar un filtro pasa el modelo a Personalizado y actualiza la escena",
+        "Los rangos de cada filtro son los de la SPEC"
+      ],
+      "depende_de": [
+        "B-01",
+        "E-04"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "U-04",
+      "prioridad": 24,
+      "fase": "v1",
+      "titulo": "Paneles de lecturas, advertencias y qué mirar",
+      "descripcion": "Tabla de lecturas y advertencias por modelo, texto de qué mirar y resumen comparativo.",
+      "criterios_aceptacion": [
+        "Las lecturas corresponden al instante actual",
+        "Sin compensaciones se muestra el mensaje en verde",
+        "El resumen del punto más bajo se actualiza al cambiar modelos o parámetros"
+      ],
+      "depende_de": [
+        "U-01",
+        "B-09"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "U-05",
+      "prioridad": 25,
+      "fase": "v1",
+      "titulo": "Opciones de capa y vista",
+      "descripcion": "Toggles de silueta, lado a lado, trayectoria, brazos de momento, centro de masa, etiquetas, grilla y discos opacos.",
+      "criterios_aceptacion": [
+        "Cada toggle prende y apaga lo suyo sin afectar lo demás",
+        "El estado de los toggles se refleja en la URL"
+      ],
+      "depende_de": [
+        "E-06",
+        "S-04"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "U-06",
+      "prioridad": 26,
+      "fase": "v1",
+      "titulo": "Diseño para celular y tablet",
+      "descripcion": "Distribución y controles táctiles para pantallas chicas.",
+      "criterios_aceptacion": [
+        "En un viewport de celular la escena queda arriba y los paneles abajo",
+        "Rotar y hacer zoom funciona con gestos"
+      ],
+      "depende_de": [
+        "U-04"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-13"
+      ]
+    },
+    {
+      "id": "M-01",
+      "prioridad": 27,
+      "fase": "v1.5",
+      "titulo": "Catálogo de músculos",
+      "descripcion": "Músculos de la SPEC como datos: origen, inserción y grosor por punto anatómico.",
+      "criterios_aceptacion": [
+        "Están los 23 músculos de la SPEC funcional",
+        "Cada punto anatómico usado existe en el cálculo de landmarks",
+        "Agregar un músculo al catálogo no requiere tocar la escena"
+      ],
+      "depende_de": [
+        "E-03"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "M-02",
+      "prioridad": 28,
+      "fase": "v1.5",
+      "titulo": "Capa de músculos",
+      "descripcion": "Selector Huesos / Músculos / Solo activos.",
+      "criterios_aceptacion": [
+        "En Huesos no se ve ningún músculo",
+        "En Músculos se ven todos sobre los huesos",
+        "En Solo activos se ven solo los que superan el umbral y los huesos se atenúan"
+      ],
+      "depende_de": [
+        "M-01"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "M-03",
+      "prioridad": 29,
+      "fase": "v1.5",
+      "titulo": "Activación por ejercicio y fase",
+      "descripcion": "Tabla cualitativa de activación de 0 a 1 por ejercicio, fase y postura.",
+      "criterios_aceptacion": [
+        "Cada ejercicio devuelve activaciones entre 0 y 1",
+        "La tabla coincide con la validada por Nico",
+        "Con barra baja el glúteo mayor activa más que con barra alta en el mismo instante"
+      ],
+      "depende_de": [
+        "M-01",
+        "B-09"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-11"
+      ]
+    },
+    {
+      "id": "M-04",
+      "prioridad": 30,
+      "fase": "v1.5",
+      "titulo": "Resaltado en rojo",
+      "descripcion": "Gris si el músculo está inactivo, de rosado a rojo según la activación.",
+      "criterios_aceptacion": [
+        "Un músculo con activación 0 se ve gris",
+        "Un músculo con activación 1 se ve rojo intenso",
+        "El resaltado se puede apagar y vuelve el color anatómico"
+      ],
+      "depende_de": [
+        "M-02",
+        "M-03"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "M-05",
+      "prioridad": 31,
+      "fase": "v1.5",
+      "titulo": "Panel de músculos involucrados",
+      "descripcion": "Hasta 9 músculos ordenados por activación de A, con barra por modelo y aviso de estimación cualitativa.",
+      "criterios_aceptacion": [
+        "La lista se ordena por la activación del modelo A",
+        "Las barras de A y B reflejan sus activaciones",
+        "Se muestra el aviso de que no es EMG"
+      ],
+      "depende_de": [
+        "M-03"
+      ],
+      "estado": "pendiente",
+      "pr": null
+    },
+    {
+      "id": "M-06",
+      "prioridad": 32,
+      "fase": "v1.5",
+      "titulo": "Concéntrico, excéntrico e isométrico",
+      "descripcion": "Distinguir el tipo de contracción por músculo y fase.",
+      "criterios_aceptacion": [
+        "Cada músculo activo indica su tipo de contracción en el instante actual"
+      ],
+      "depende_de": [
+        "M-03"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-11"
+      ]
+    },
+    {
+      "id": "M-07",
+      "prioridad": 33,
+      "fase": "v2",
+      "titulo": "Malla anatómica realista",
+      "descripcion": "Reemplazar el esqueleto procedural por una malla con rig sin tocar el motor.",
+      "criterios_aceptacion": [
+        "La malla sigue la postura del motor en los 7 ejercicios",
+        "El motor biomecánico no cambia"
+      ],
+      "depende_de": [
+        "E-03"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-03"
+      ]
+    },
+    {
+      "id": "X-01",
+      "prioridad": 34,
+      "fase": "v2",
+      "titulo": "Ejercicios como datos",
+      "descripcion": "Formato de definición de ejercicio y carga de los 7 actuales desde ese formato.",
+      "criterios_aceptacion": [
+        "Los 7 ejercicios se cargan desde definiciones de datos",
+        "Agregar un ejercicio que use un solver existente no requiere código"
+      ],
+      "depende_de": [
+        "U-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-10"
+      ]
+    },
+    {
+      "id": "X-02",
+      "prioridad": 35,
+      "fase": "v2",
+      "titulo": "Peso muerto convencional",
+      "descripcion": "Arranque desde el piso con barra sobre el mediopié.",
+      "criterios_aceptacion": [
+        "El centro de masa queda sobre el mediopié en todo el recorrido",
+        "La barra arranca a la altura de los discos apoyados en el piso"
+      ],
+      "depende_de": [
+        "X-01",
+        "B-07"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-15"
+      ]
+    },
+    {
+      "id": "X-03",
+      "prioridad": 36,
+      "fase": "v2",
+      "titulo": "Hip thrust",
+      "descripcion": "Apoyo de espalda en banco y extensión de cadera.",
+      "criterios_aceptacion": [
+        "La cadera llega a extensión completa arriba",
+        "El glúteo mayor es el músculo más activo arriba"
+      ],
+      "depende_de": [
+        "X-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-15"
+      ]
+    },
+    {
+      "id": "X-04",
+      "prioridad": 37,
+      "fase": "v2",
+      "titulo": "Press banca",
+      "descripcion": "Acostado, barra con trayectoria en J y retracción escapular.",
+      "criterios_aceptacion": [
+        "La barra baja a la altura del esternón",
+        "Las escápulas quedan retraídas durante todo el recorrido"
+      ],
+      "depende_de": [
+        "X-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-15"
+      ]
+    },
+    {
+      "id": "X-05",
+      "prioridad": 38,
+      "fase": "v2",
+      "titulo": "Press militar y remo",
+      "descripcion": "Empujes y tirones verticales y horizontales de pie.",
+      "criterios_aceptacion": [
+        "El centro de masa queda sobre el mediopié",
+        "Las escápulas acompañan con rotación, elevación o retracción según el ejercicio"
+      ],
+      "depende_de": [
+        "X-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-15"
+      ]
+    },
+    {
+      "id": "X-06",
+      "prioridad": 39,
+      "fase": "v2",
+      "titulo": "Movimientos fuera del plano sagital",
+      "descripcion": "Stance, valgo, rotaciones y ejercicios unilaterales (zancada).",
+      "criterios_aceptacion": [
+        "El solver acepta ángulos en el plano frontal",
+        "La zancada muestra las dos piernas con roles distintos"
+      ],
+      "depende_de": [
+        "X-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-12",
+        "D-15"
+      ]
+    },
+    {
+      "id": "C-01",
+      "prioridad": 40,
+      "fase": "v2",
+      "titulo": "Cuentas de entrenador",
+      "descripcion": "Registro e inicio de sesión.",
+      "criterios_aceptacion": [
+        "Un entrenador puede crear cuenta e iniciar sesión",
+        "Cada entrenador ve solo sus datos"
+      ],
+      "depende_de": [
+        "S-03"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-04",
+        "D-06"
+      ]
+    },
+    {
+      "id": "C-02",
+      "prioridad": 41,
+      "fase": "v2",
+      "titulo": "Perfiles de alumnos",
+      "descripcion": "Guardar los filtros anatómicos de un alumno con un nombre y usarlos como modelo A o B.",
+      "criterios_aceptacion": [
+        "Se puede guardar, editar y borrar un perfil",
+        "Un perfil guardado se puede elegir como modelo"
+      ],
+      "depende_de": [
+        "C-01",
+        "U-03"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-04",
+        "D-09"
+      ]
+    },
+    {
+      "id": "C-03",
+      "prioridad": 42,
+      "fase": "v2",
+      "titulo": "Links compartibles",
+      "descripcion": "Guardar una escena (ejercicio, modelos, instante, cámara, capa) y compartirla por link.",
+      "criterios_aceptacion": [
+        "El link abre la escena exactamente como se guardó",
+        "Quien recibe el link no necesita cuenta para verla"
+      ],
+      "depende_de": [
+        "S-04",
+        "C-01"
+      ],
+      "estado": "bloqueado",
+      "pr": null,
+      "bloqueado_por": [
+        "D-04"
+      ]
+    }
+  ]
+}
