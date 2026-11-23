@@ -118,8 +118,8 @@
       "depende_de": [
         "S-02"
       ],
-      "estado": "pendiente",
-      "pr": null
+      "estado": "en_review",
+      "pr": 6
     },
     {
       "id": "B-01",
