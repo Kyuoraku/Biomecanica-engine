@@ -26,13 +26,13 @@ Toda decisión de diseño o arquitectura la toma Nico. Este archivo registra las
 | D-01 | Framework de frontend y manejo de estado | Vite + React + TypeScript; Zustand. Sin SSR |
 | D-08 | Herramientas de calidad | pnpm, Vitest, Playwright, Biome y StrykerJS. CI en GitHub Actions como check obligatorio de `main` |
 | D-05 | Hosting | Netlify, plan gratuito, deploy desde `main` |
+| D-02 | Motor 3D | Three.js directo, encapsulado en `src/scene/` |
 | — | Contexto para continuar | Un proyecto en la web de Claude con todo el contexto para seguir el desarrollo en un hilo |
 
 ## Pendientes
 
 | ID | Tema | Quién | Sugerencia de Claude | Bloquea |
 | --- | --- | --- | --- | --- |
-| D-02 | Motor 3D | Nico | Three.js directo, encapsulado en `src/scene/` (lo que usa el prototipo) | E-01 |
 | D-03 | Representación del cuerpo | Nico | Arrancar con el esqueleto procedural del prototipo y evaluar después una malla anatómica con rig. Ojo con las licencias (las CC BY-SA obligan a liberar lo derivado) | M-07 |
 | D-10 | Formato de ejercicio como datos | Nico | JSON con tipo de solver, recorrido, carga por defecto, vista de cámara, claves de texto y tabla de músculos | X-01 |
 | D-11 | Tabla de activación muscular | Nico | Nico valida la tabla por ejercicio y fase del prototipo; decidir si se distingue concéntrico, excéntrico e isométrico | M-03, M-06 |

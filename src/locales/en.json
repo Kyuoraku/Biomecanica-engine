@@ -2,5 +2,12 @@
   "home": {
     "title": "Biomechanics Lab",
     "subtitle": "3D human models to understand how each body moves in each exercise"
+  },
+  "language": {
+    "label": "Language",
+    "names": {
+      "es": "Español",
+      "en": "English"
+    }
   }
 }

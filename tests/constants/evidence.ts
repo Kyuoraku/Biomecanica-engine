@@ -18,3 +18,5 @@ export const SOFTWARE_WEBGL_ARGS = ["--use-angle=swiftshader", "--enable-unsafe-
 export const SOFTWARE_RENDERER_PATTERN = /swiftshader/i;
 
 export const GPU_RENDERER_EXAMPLE = "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 Direct3D11)";
+
+export const EVIDENCE_DEFAULT_LOCALE = "es-AR";

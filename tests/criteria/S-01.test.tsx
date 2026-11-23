@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { act, render } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
+import { LANGUAGE_STORAGE_KEY } from "../../src/constants/i18n";
 import { createTranslator, MissingTranslationError } from "../../src/i18n/createTranslator";
 import en from "../../src/locales/en.json";
 import es from "../../src/locales/es.json";
@@ -38,10 +39,12 @@ function collectStrings(value: unknown): string[] {
 describe("S-01 Proyecto base", () => {
   afterEach(() => {
     document.body.innerHTML = "";
+    localStorage.clear();
   });
 
   it("[S-01.1][feliz] la app se monta en #root y muestra la página inicial", () => {
     document.body.innerHTML = '<div id="root"></div>';
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, "es");
     let root: ReturnType<typeof mountApp> | undefined;
     act(() => {
       root = mountApp(document);
@@ -57,7 +60,7 @@ describe("S-01 Proyecto base", () => {
   });
 
   it("[S-01.2][feliz] todo el texto visible sale de locales/ y ningún componente tiene texto escrito", () => {
-    const { container } = render(<App translator={createTranslator("en")} />);
+    const { container } = render(<App translator={createTranslator({ language: "en" })} />);
     const visibleTexts = [...container.querySelectorAll("h1, p")].map((node) => node.textContent);
     const localeTexts = collectStrings(en);
     expect(visibleTexts.length).toBeGreaterThan(0);
@@ -74,7 +77,7 @@ describe("S-01 Proyecto base", () => {
 
   it("[S-01.2][triste] un texto escrito en un componente o una clave faltante se detectan", () => {
     expect(findHardcodedText(componentWithHardcodedText)).toEqual(["Hola mundo", "Esqueleto"]);
-    const translator = createTranslator("es");
+    const translator = createTranslator({ language: "es" });
     expect(() => translator.t("home.missing")).toThrow(MissingTranslationError);
   });
 

@@ -183,7 +183,7 @@ Para asegurar que los tests de criterios realmente detectan fallas:
 | Tema | Estado | Sugerencia |
 | --- | --- | --- |
 | Framework y estado | Decidido (D-01) | Vite + React + TypeScript; Zustand |
-| Motor 3D | Pendiente D-02 | Three.js directo, encapsulado en `src/scene/` |
+| Motor 3D | Decidido (D-02) | Three.js directo, encapsulado en `src/scene/` |
 | i18n | Decidido | i18next + i18next-browser-languagedetector |
 | Gestor de paquetes, tests, evidencia, lint, mutación | Decidido (D-08) | pnpm, Vitest, Playwright, Biome, StrykerJS |
 | Estilos | Pendiente D-19 | Tailwind |
