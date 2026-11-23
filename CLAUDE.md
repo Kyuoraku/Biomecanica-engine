@@ -22,4 +22,4 @@ Antes de trabajar, leé lo que aplique de `docs/`: visión, SPEC funcional, SPEC
 
 ## Checks antes de cada PR
 
-`pnpm lint`, `pnpm typecheck`, `pnpm test` y `pnpm evidence` (lo mismo corre el CI, check obligatorio de `main`). Además, a medida que lleguen sus features: lint, typecheck, tests de criterios (`[<id>.<n>][feliz]` y `[<id>.<n>][triste]`), tests de los tests (trazabilidad y mutación), chequeo de claves de idiomas y capturas de evidencia en computadora y teléfono.
+`pnpm lint`, `pnpm typecheck`, `pnpm test` y `pnpm evidence` (lo mismo corre el CI, check obligatorio de `main`). Los tests de criterios se nombran `[<id>.<n>][feliz]` y `[<id>.<n>][triste]` y las capturas van en computadora y teléfono. A medida que lleguen sus features se suman los tests de los tests (trazabilidad y mutación, S-06) y el chequeo de claves de idiomas (S-05).
