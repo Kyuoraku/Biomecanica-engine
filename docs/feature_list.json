@@ -28,8 +28,8 @@
         "Existen las carpetas de las tres capas y src/biomechanics no importa nada de scene ni ui (lo verifica una regla de lint o un test)"
       ],
       "depende_de": [],
-      "estado": "en_progreso",
-      "pr": null
+      "estado": "en_review",
+      "pr": 2
     },
     {
       "id": "S-02",
