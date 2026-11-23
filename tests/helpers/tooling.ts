@@ -5,6 +5,7 @@ import { join, resolve } from "node:path";
 import {
   BIOME_CONFIG_FILE,
   BIOME_ENTRY,
+  PLAIN_OUTPUT_ENV,
   TOOL_TIMEOUT_MS,
   VITEST_ENTRY,
 } from "../constants/tooling";
@@ -19,6 +20,7 @@ function runNodeTool(entry: string, args: string[], cwd: string): ToolResult {
     cwd,
     encoding: "utf-8",
     timeout: TOOL_TIMEOUT_MS,
+    env: { ...process.env, ...PLAIN_OUTPUT_ENV },
   });
   return { exitCode: result.status ?? -1, output: `${result.stdout}${result.stderr}` };
 }
