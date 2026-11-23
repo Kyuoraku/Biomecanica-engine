@@ -24,4 +24,23 @@ Las reglas de trabajo están en `docs/flujo-de-trabajo.md`: una feature de `docs
 
 ## Estado
 
-Solo documentación y prototipo. El proyecto base no se crea hasta que estén tomadas las decisiones que bloquean `S-01` (ver `docs/decisiones.md`).
+Proyecto base (S-01) en curso. El avance de cada feature está en `docs/feature_list.json`.
+
+## Desarrollo
+
+Requiere Node 24 y pnpm (Vite + React + TypeScript; ver `docs/decisiones.md`).
+
+```
+pnpm install
+pnpm dev          # servidor local
+pnpm lint        # Biome
+pnpm typecheck   # TypeScript estricto
+pnpm test        # tests de criterios (Vitest)
+pnpm evidence    # capturas con Playwright en screenshots/<id>/
+```
+
+El CI de GitHub Actions corre lint, typecheck, tests, build y capturas en cada PR.
+
+## Licencia
+
+MIT (ver `LICENSE`).

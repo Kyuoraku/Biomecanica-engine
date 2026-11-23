@@ -158,7 +158,7 @@ Para asegurar que los tests de criterios realmente detectan fallas:
 | **Mutación** | Se introducen cambios automáticos en el código (invertir una comparación, cambiar un `+` por `-`, borrar una línea) y los tests tienen que fallar. Umbral mínimo de mutantes eliminados en `src/biomechanics`: 80 % | El código real con sus tests supera el umbral | Un fixture con un test vacío (que no comprueba nada) queda por debajo del umbral y el chequeo falla |
 | **Sensibilidad de los helpers** | Los helpers de aserción propios (por ejemplo, `expectCenterOfMassOverMidfoot`) fallan cuando deben | El helper pasa con una postura equilibrada | El helper falla con una postura corrida 5 mm |
 
-- Herramienta de mutación: **pendiente D-08** (sugerencia: StrykerJS con el runner de Vitest).
+- Herramienta de mutación: StrykerJS con el runner de Vitest (D-08).
 - Los meta-tests corren en el chequeo previo a cada PR.
 
 ### 3. Invariantes del motor (ejemplos de criterios)
@@ -182,12 +182,12 @@ Para asegurar que los tests de criterios realmente detectan fallas:
 
 | Tema | Estado | Sugerencia |
 | --- | --- | --- |
-| Framework y estado | Pendiente D-01 | Vite + React + TypeScript; Zustand |
+| Framework y estado | Decidido (D-01) | Vite + React + TypeScript; Zustand |
 | Motor 3D | Pendiente D-02 | Three.js directo, encapsulado en `src/scene/` |
 | i18n | Decidido | i18next + i18next-browser-languagedetector |
-| Gestor de paquetes, tests, evidencia, lint, mutación | Pendiente D-08 | pnpm, Vitest, Playwright, Biome, StrykerJS |
+| Gestor de paquetes, tests, evidencia, lint, mutación | Decidido (D-08) | pnpm, Vitest, Playwright, Biome, StrykerJS |
 | Estilos | Pendiente D-19 | Tailwind |
-| Hosting | Pendiente D-05 | Netlify, plan gratuito (sitio estático) |
+| Hosting | Decidido (D-05) | Netlify, plan gratuito (sitio estático) |
 
 ## Riesgos técnicos
 
