@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "testRunner": "vitest",
+  "plugins": ["@stryker-mutator/vitest-runner"],
+  "vitest": { "configFile": "vitest.mutation.config.ts" },
+  "mutate": ["src/biomechanics/**/*.ts"],
+  "coverageAnalysis": "perTest",
+  "allowEmpty": true,
+  "thresholds": { "high": 90, "low": 80, "break": 80 },
+  "reporters": ["clear-text", "progress"],
+  "tempDirName": ".stryker-tmp"
+}
