@@ -28,6 +28,23 @@ Longitudes como fracción de la altura H (Winter).
 
 **Mediopié**: 0,2 × largo del pie por delante del tobillo. Es la vertical que el solver usa como línea de equilibrio.
 
+## Filtros y presets
+
+Rangos y valores por defecto de los filtros: SPEC funcional, sección 3. Un valor fuera de rango se ajusta al límite más cercano; un valor que no es un número usa el de Winter.
+
+Valores de los presets (los del prototipo aprobado). Lo que no figura queda como en Promedio.
+
+| Preset | Fémur | Tibia | Torso | Otros |
+| --- | --- | --- | --- | --- |
+| Promedio (Winter) | 24,5 % | 24,6 % | 28,8 % | Altura 175 cm, brazo 18,6 %, dorsiflexión 35°, flexión de cadera 125°, isquios 85°, pelvis 0° |
+| Fémur corto / torso largo | 21,5 % | | 31,8 % | |
+| Fémur largo / torso corto | 27,5 % | | 25,8 % | |
+| Tibia larga | 23,3 % | 27,0 % | 27,6 % | |
+| Tobillo rígido | | | | Dorsiflexión 20° |
+| Cadera / isquios limitados | | | | Flexión de cadera 100°, isquios 65° |
+| Anteversión pélvica marcada | | | | Pelvis +14° |
+
+
 ## Masas segmentarias
 
 Fracción del peso corporal y posición del centro de masa en el segmento.

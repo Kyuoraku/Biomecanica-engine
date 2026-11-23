@@ -1,0 +1,11 @@
+export const ANKLE_HEIGHT_FRACTION = 0.039;
+
+export const FOOT_LENGTH_FRACTION = 0.152;
+
+export const HEEL_BEHIND_ANKLE_FOOT_FRACTION = 0.22;
+
+export const TOE_AHEAD_OF_ANKLE_FOOT_FRACTION = 0.78;
+
+export const MIDFOOT_AHEAD_OF_ANKLE_FOOT_FRACTION = 0.2;
+
+export const FOREARM_TO_ARM_RATIO = 1.05;
