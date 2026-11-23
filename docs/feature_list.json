@@ -76,7 +76,9 @@
         "Un parámetro inválido en la URL se ignora y se usa el valor por defecto, sin romper la escena"
       ],
       "depende_de": [
-        "S-02"
+        "S-02",
+        "E-01",
+        "B-05"
       ],
       "estado": "pendiente",
       "pr": null
@@ -292,11 +294,8 @@
       "depende_de": [
         "S-01"
       ],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-02"
-      ]
+      "estado": "pendiente",
+      "pr": null
     },
     {
       "id": "E-02",
