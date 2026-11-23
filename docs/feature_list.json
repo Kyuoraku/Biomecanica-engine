@@ -1,6 +1,6 @@
 {
   "proyecto": "Biomecánica Lab",
-  "actualizado": "2026-11-21",
+  "actualizado": "2026-11-22",
   "version": "única: el producto se construye de principio a fin",
   "convenciones": {
     "estados": [
@@ -28,12 +28,8 @@
         "Existen las carpetas de las tres capas y src/biomechanics no importa nada de scene ni ui (lo verifica una regla de lint o un test)"
       ],
       "depende_de": [],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-01",
-        "D-08"
-      ]
+      "estado": "en_progreso",
+      "pr": null
     },
     {
       "id": "S-02",
@@ -49,11 +45,8 @@
       "depende_de": [
         "S-01"
       ],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-08"
-      ]
+      "estado": "pendiente",
+      "pr": null
     },
     {
       "id": "S-03",
@@ -68,12 +61,8 @@
       "depende_de": [
         "S-01"
       ],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-05",
-        "D-17"
-      ]
+      "estado": "pendiente",
+      "pr": null
     },
     {
       "id": "S-04",
@@ -127,11 +116,8 @@
       "depende_de": [
         "S-02"
       ],
-      "estado": "bloqueado",
-      "pr": null,
-      "bloqueado_por": [
-        "D-08"
-      ]
+      "estado": "pendiente",
+      "pr": null
     },
     {
       "id": "B-01",
