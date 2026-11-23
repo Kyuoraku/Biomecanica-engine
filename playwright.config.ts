@@ -2,6 +2,7 @@ import { defineConfig } from "@playwright/test";
 import {
   DESKTOP_VIEWPORT,
   EVIDENCE_BASE_URL,
+  EVIDENCE_DEFAULT_LOCALE,
   EVIDENCE_SERVER_PORT,
   PHONE_VIEWPORT,
   SOFTWARE_WEBGL_ARGS,
@@ -11,6 +12,7 @@ export default defineConfig({
   testDir: "tests/evidence",
   use: {
     baseURL: EVIDENCE_BASE_URL,
+    locale: EVIDENCE_DEFAULT_LOCALE,
     launchOptions: { args: SOFTWARE_WEBGL_ARGS },
   },
   projects: [

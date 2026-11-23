@@ -98,8 +98,8 @@
       "depende_de": [
         "S-02"
       ],
-      "estado": "pendiente",
-      "pr": null
+      "estado": "en_review",
+      "pr": 5
     },
     {
       "id": "S-06",

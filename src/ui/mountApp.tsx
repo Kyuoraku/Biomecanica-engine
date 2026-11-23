@@ -19,7 +19,7 @@ export function mountApp(document: Document, rootId: string = ROOT_ELEMENT_ID): 
   const root = createRoot(element);
   root.render(
     <StrictMode>
-      <App translator={createTranslator()} />
+      <App translator={createTranslator({ document })} />
     </StrictMode>,
   );
   return root;
