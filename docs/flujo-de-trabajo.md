@@ -42,5 +42,4 @@ Reglas definidas por Nico, las mismas que en Etha Joyas, adaptadas a una app 3D.
 
 - Los tests prueban los criterios de los SPEC; no se escriben tests genéricos.
 - Cada criterio tiene al menos un test de **caso feliz** y uno de **caso triste**. El nombre empieza con el identificador y el caso: `[B-05.2][feliz] …`, `[B-05.2][triste] …`.
-- Hay **tests de los tests**: trazabilidad (todo criterio tiene sus dos tests y todo test apunta a un criterio que existe), mutación (los tests fallan cuando se rompe el código) y sensibilidad de los helpers de aserción. Cada meta-test tiene también su caso feliz y su caso triste.
 - El motor biomecánico se prueba con invariantes físicos, no con números mágicos.

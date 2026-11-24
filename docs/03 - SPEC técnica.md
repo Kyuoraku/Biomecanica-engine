@@ -71,7 +71,6 @@ src/
   locales/             es.json, en.json
 tests/
   criteria/            un archivo por feature: tests de los criterios (feliz y triste)
-  meta/                tests de los tests (sección "Pruebas")
   evidence/            specs de Playwright por feature
   helpers/  constants/
 ```
@@ -148,20 +147,7 @@ interface Translator { t(key: string, params?: Record<string, unknown>): string;
 - El nombre del test empieza con el identificador y el caso: `[B-05.2][feliz] el fémur largo se inclina más que el corto en el punto más bajo` y `[B-05.2][triste] con fémures iguales la inclinación es la misma`.
 - No se escriben tests que no estén atados a un criterio (nada de "renderiza sin romper" sueltos). Si hace falta probar algo que no está en un criterio, primero se agrega el criterio a la SPEC y a `feature_list.json`.
 
-### 2. Tests de los tests
-
-Para asegurar que los tests de criterios realmente detectan fallas:
-
-| Meta-test | Qué verifica | Caso feliz | Caso triste |
-| --- | --- | --- | --- |
-| **Trazabilidad** | Cada criterio de cada feature en estado `en_progreso`, `en_review` o `hecho` tiene al menos un test `[feliz]` y uno `[triste]`, y cada test apunta a un criterio que existe | Una feature con sus dos tests pasa el chequeo | Un fixture de feature sin test `[triste]` (o con un test que apunta a `X-99.1`, que no existe) hace fallar el chequeo |
-| **Mutación** | Se introducen cambios automáticos en el código (invertir una comparación, cambiar un `+` por `-`, borrar una línea) y los tests tienen que fallar. Umbral mínimo de mutantes eliminados en `src/biomechanics`: 80 % | El código real con sus tests supera el umbral | Un fixture con un test vacío (que no comprueba nada) queda por debajo del umbral y el chequeo falla |
-| **Sensibilidad de los helpers** | Los helpers de aserción propios (por ejemplo, `expectCenterOfMassOverMidfoot`) fallan cuando deben | El helper pasa con una postura equilibrada | El helper falla con una postura corrida 5 mm |
-
-- Herramienta de mutación: StrykerJS con el runner de Vitest (D-08).
-- Los meta-tests corren en el chequeo previo a cada PR.
-
-### 3. Invariantes del motor (ejemplos de criterios)
+### 2. Invariantes del motor (ejemplos de criterios)
 
 | Invariante | Feliz | Triste |
 | --- | --- | --- |
@@ -171,7 +157,7 @@ Para asegurar que los tests de criterios realmente detectan fallas:
 | IK | Los segmentos del brazo conservan su largo (error < 0,1 mm) | Un objetivo fuera de alcance deja el brazo extendido hacia el objetivo, sin estirar los segmentos |
 | Parámetros | Valores dentro de rango se usan tal cual | Valores fuera de rango se ajustan al límite |
 
-### 4. Evidencia
+### 3. Evidencia
 
 - Playwright abre la URL de la feature, espera a que el canvas tenga `data-ready="true"` y saca una captura por criterio en `screenshots/<id>/`, nombrada con el número de criterio.
 - Viewports: computadora (1400×1000) y teléfono (390×844) para todo lo que tenga UI.
@@ -185,7 +171,7 @@ Para asegurar que los tests de criterios realmente detectan fallas:
 | Framework y estado | Decidido (D-01) | Vite + React + TypeScript; Zustand |
 | Motor 3D | Decidido (D-02) | Three.js directo, encapsulado en `src/scene/` |
 | i18n | Decidido | i18next + i18next-browser-languagedetector |
-| Gestor de paquetes, tests, evidencia, lint, mutación | Decidido (D-08) | pnpm, Vitest, Playwright, Biome, StrykerJS |
+| Gestor de paquetes, tests, evidencia, lint | Decidido (D-08) | pnpm, Vitest, Playwright, Biome |
 | Estilos | Pendiente D-19 | Tailwind |
 | Hosting | Decidido (D-05) | Netlify, plan gratuito (sitio estático) |
 
@@ -198,4 +184,3 @@ Para asegurar que los tests de criterios realmente detectan fallas:
 | Malla anatómica realista pesada o con licencia incompatible | Mantener la escena procedural mientras se decide D-03; revisar licencias |
 | Que la activación muscular se lea como dato científico | Aviso visible y tabla validada por Nico (D-11) |
 | Que el solver sagital no alcance para ejercicios unilaterales o con rotación | Documentado como simplificación; ampliarlo (D-12) |
-| Mutation testing lento | Correrlo sobre los archivos cambiados en cada PR y completo antes de cerrar una fase |
