@@ -104,24 +104,6 @@
       "pr": 5
     },
     {
-      "id": "S-06",
-      "prioridad": 6,
-      "fase": "setup",
-      "titulo": "Tests de los tests",
-      "descripcion": "Chequeo de trazabilidad criterio ↔ test, tests de mutación con umbral y helpers de aserción con caso triste.",
-      "criterios_aceptacion": [
-        "El chequeo de trazabilidad pasa cuando cada criterio de las features en progreso, en review o hechas tiene un test [feliz] y uno [triste]",
-        "El chequeo de trazabilidad falla con un fixture de feature sin test [triste] o con un test que apunta a un criterio inexistente",
-        "Los tests de mutación de src/biomechanics superan el 80 % de mutantes eliminados",
-        "Un fixture con un test vacío queda por debajo del umbral y el chequeo falla"
-      ],
-      "depende_de": [
-        "S-02"
-      ],
-      "estado": "pendiente",
-      "pr": null
-    },
-    {
       "id": "B-01",
       "prioridad": 7,
       "fase": "motor",
@@ -136,8 +118,8 @@
       "depende_de": [
         "S-01"
       ],
-      "estado": "pendiente",
-      "pr": null
+      "estado": "en_review",
+      "pr": 10
     },
     {
       "id": "B-02",

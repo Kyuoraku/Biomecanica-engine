@@ -19,12 +19,12 @@ Toda decisión de diseño o arquitectura la toma Nico. Este archivo registra las
 | — | Idiomas | Español e inglés, con archivos `es.json` y `en.json`. Una librería detecta el idioma y un desplegable permite cambiarlo |
 | D-07 | Librería de i18n | i18next + i18next-browser-languagedetector (elegida por Claude a pedido de Nico) |
 | — | Diseño de código | Componentes de frontend y de backend (si lo hubiera) modulares, con principios SOLID y buenas prácticas |
-| — | Tests | Prueban los criterios definidos en los SPEC, no tests genéricos. Caso feliz y caso triste por criterio. Además, tests que prueban que los demás tests funcionan |
+| — | Tests | Prueban los criterios definidos en los SPEC, no tests genéricos. Caso feliz y caso triste por criterio |
 | — | Responsive | Se usa en teléfono y en computadora, con una UI amigable y fácil de usar |
 | D-16 | Nombre del repo | `Kyuoraku/Biomecanica-engine` (https://github.com/Kyuoraku/Biomecanica-engine) |
 | D-17 | Visibilidad y licencia del repo | Público, con `main` protegida: todo entra por PR. Licencia MIT para el código; si más adelante se usa una malla CC BY-SA (D-03), esa malla va con su propia licencia |
 | D-01 | Framework de frontend y manejo de estado | Vite + React + TypeScript; Zustand. Sin SSR |
-| D-08 | Herramientas de calidad | pnpm, Vitest, Playwright, Biome y StrykerJS. CI en GitHub Actions como check obligatorio de `main` |
+| D-08 | Herramientas de calidad | pnpm, Vitest, Playwright y Biome. CI en GitHub Actions como check obligatorio de `main` |
 | D-05 | Hosting | Netlify, plan gratuito, deploy desde `main` |
 | D-02 | Motor 3D | Three.js directo, encapsulado en `src/scene/` |
 | — | Contexto para continuar | Un proyecto en la web de Claude con todo el contexto para seguir el desarrollo en un hilo |
@@ -49,3 +49,4 @@ Toda decisión de diseño o arquitectura la toma Nico. Este archivo registra las
 | D-09 | Perfiles de alumnos | Fuera de alcance |
 | D-13 | Soporte en celular y tablet | Resuelto: responsive obligatorio |
 | D-14 | Relación con TrainingBook | Proyectos independientes |
+| S-06 | Tests de los tests (trazabilidad, mutación con StrykerJS, sabotajes) | Nico, 24/11/2026: la plataforma no lo necesita |
